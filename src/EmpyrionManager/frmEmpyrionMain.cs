@@ -29,6 +29,7 @@ namespace EmpyrionManager
         private const string _puttyLocation = "C:\\Users\\pklingman\\Desktop\\putty.exe";
         private const string _backupEmpyrion = "BackupEmpyrion.bat";
         private const string _backupDestination = "C:\\steamcmd\\empBackup\\";
+        private const int _minimumBackupSize = 5000;
 
         public frmEmpyrionMain()
         {
@@ -75,12 +76,11 @@ namespace EmpyrionManager
                 // Verify that backup exists now
                 if (!this.BackupExists(txtBackupName.Text))
                 {
-                    throw new ApplicationException("Attemped to create backup; does not exist.");
+                    throw new ApplicationException("Attemped to create backup, but it does not exist; failure implied.");
                 }
-                //var backupInfo = new DirectoryInfo(_backupDestination + txtBackupName.Text.TrailingBackslash());
-                //MessageBox.Show(_backupDestination + txtBackupName.Text.TrailingBackslash());
+
                 var backupSize = DirectoryExtensions.FullDirectorySize(_backupDestination + txtBackupName.Text.TrailingBackslash());
-                if (backupSize > 5000)
+                if (backupSize > _minimumBackupSize)
                 {
                     var backupSizeMb = backupSize / 1000000d;
                     lblBackupStatus.ForeColor = System.Drawing.Color.DarkGreen;
@@ -88,7 +88,10 @@ namespace EmpyrionManager
                     lblBackupStatus.Visible = true;
                     var fader = new FadeHelper(lblBackupStatus);
                     fader.ScheduleFade(7500);
-                    //FadeHelper.ScheduleFade(lblBackupStatus, 5000);
+                }
+                else
+                {
+                    throw new ApplicationException("Attempted to create backup, but it falls under minimum configured size. Failure implied.");
                 }
             }
             catch (Exception ex)
@@ -170,44 +173,10 @@ namespace EmpyrionManager
             lblBackupStatus.Visible = true;
             lblBackupStatus.BackColor = this.BackColor;
             Application.DoEvents();
-            //lblBackupStatus.ForeColor = System.Drawing.Color.FromArgb(127, lblBackupStatus.ForeColor.R, lblBackupStatus.ForeColor.G, lblBackupStatus.ForeColor.B);
-            //this.FadeOutBackupLabel(2000);
             var fader = new FadeHelper(lblBackupStatus);
             fader.ScheduleFade(2000);
             
-            Application.DoEvents();
+            //Application.DoEvents();
         }
-
-        /*
-        private void FadeOutBackupLabel(int milsUntilFade)
-        {
-            var scheduleFade = new Timer();
-            scheduleFade.Interval = milsUntilFade;
-            scheduleFade.Tick += ScheduleFade_Tick;
-            scheduleFade.Start();
-        }
-
-        private void ScheduleFade_Tick(object sender, EventArgs e)
-        {
-            var scheduler = (Timer)sender;
-            var fadeStepper = new Timer();
-            fadeStepper.Interval = 75;
-            fadeStepper.Tick += FadeStepper_Tick;
-            fadeStepper.Start();
-            scheduler.Stop();
-        }
-
-        private void FadeStepper_Tick(object sender, EventArgs e)
-        {
-            var newAlpha = lblToTransparent.BackColor.A - 20;
-            if (newAlpha < 0) { newAlpha = 0; }
-            lblToTransparent.BackColor = System.Drawing.Color.FromArgb(newAlpha, lblToTransparent.BackColor.R, lblToTransparent.BackColor.G, lblToTransparent.BackColor.B);
-            if (newAlpha == 0)
-            {
-                var fader = (Timer)sender;
-                fader.Stop();
-            }
-        }
-        */
     }
 }
