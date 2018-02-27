@@ -23,6 +23,7 @@ namespace EmpyrionManager
     using System.IO;
     using Extensions;
     using Helpers;
+    using Graphics;
     public partial class frmEmpyrionMain : Form
     {
         // App settings - reason why constants are not named properly
@@ -31,6 +32,8 @@ namespace EmpyrionManager
         private const string _backupDestination = "C:\\steamcmd\\empBackup\\";
         private const int _minimumBackupSize = 5000;
 
+        private frmViewImage viewImageForm = null;
+
         public frmEmpyrionMain()
         {
             InitializeComponent();
@@ -38,7 +41,94 @@ namespace EmpyrionManager
 
         private void btnLaunchTelnet_Click(object sender, EventArgs e)
         {
+            var text = @"
+CD OF REGISTERED GAMES
+CREATED FRIDAY 8/8/96
+README
+-=-=-=-=-=-=-=-=-=-=-=-=-
 
+Contents
+
+1.  List of Stuff on the CD
+2.  How to install stuff
+3.  Miscellaneous info
+
+-=-=-=-=-=-=-=-=-=-=-=-=-
+
+1.  LIST OF STUFF ON THE CD
+
+On this CD (As of 8/8/96) there are the following games/utilities/things:
+Hexen, Heretic, Doom, Doom 2, Descent, Rise of the Triad, Quake, Duke
+Nukem 3D, WarCraft II, WarCraft II Expansion Pack, Caligari TrueSpace, 
+Settlers 2, One Must Fall, Metal & Lace, Worms Plus, Terminal Velocity,
+Caesar 2, the PK Utilities, the Inredible Machine, and Champions of Xanth.
+
+All of these games/utilities/things are REGISTERED/CRACKED with the
+exception of Descent and Terminal Velocity, which are Shareware.
+
+All of these games/utilities/things were also zipped straight off of
+my computer or my friend's computer, and therefore may be in a state
+of use when installed (i.e. savegame files exist, configurations exist,
+etc.).  If this is the case, feel free to overwrite/change them after
+installation.
+
+Scheduled updates to this CD include:  Mortal Kombat 3, Virtua Fighter, 
+and possibly some others.  But you'll have to wait for those.  ;)
+
+2.  HOW TO INSTALL STUFF
+
+The general procedure to follow when you want to play a game is to
+get into a DOS environment (NOT an MS-DOS prompt icon in Windows 3.1)
+and go to your CD-ROM drive, change directories to the game you want
+to try, and type the appropriate commandline (i.e. doom for doom or
+quake for quake or doom2 for doom II, etc).  In about half the cases,
+this should work.  If not, no big deal, just XCOPY the whole subdirectory
+to a directory on your hard drive (i.e. XCOPY *.* C:\QUAKE /S, typed from
+the D:\QUAKE directory) and change the configuration, and run it from
+there.  Right now all games are configured for a SoundBlaster AWE32 if
+they came off my computer and a SoundBlaster 100% compatible if they
+came off my friend's computer.
+
+3.  MISCELLANEOUS INFO
+
+Although it hurts to do so, I'd like to thank my boss for allowing
+me to burn this CD with his sacred HP 2040i SCSI CD-Recordable drive,
+which of course I installed and configured, but he spent the dough on.
+I'd also like to thank Earl Peters for contributing his BOX of disks
+full of software to this cause.  I'd like to thank all my friends for
+furthering the bytes of software piracy...  Earl Peters, Todd Snyder,
+Nate Myers, Steve Fair, Taylor Smith, Frank Hanner, Chris Billman,
+Robert Baumer, and a bunch of others that my brain's too fried to
+remember right now.
+
+There's a file called KLINGMAN.CD which contains legaleze info from
+yours truly so I can't get too burnt for anything screwing up on your
+end or the Feds' end...  ;)
+
+And be sure to give this back to me soon, I only burnt one copy ;)
+Should any updates of this CD follow, an updated README file will
+accompany them.  Thanks for reading!
+
+Caligari TrueSpace, a 3-D modeling, rendering, and animation studio,
+needs a serial number/key to install.  That key can be found in the
+file TRUSPACE.SN in the root directory of the CD or in the
+TrueSpace directory.
+
+README.TXT 8/8/96
+";
+
+            var consoleOut = new ConsoleBitmap();
+            consoleOut.ForeColor = System.Drawing.Color.Yellow;
+            consoleOut.BackColor = System.Drawing.Color.DarkBlue;
+            consoleOut.OutputFont = new System.Drawing.Font("Courier New", 10, System.Drawing.FontStyle.Bold);
+            var fullImg = consoleOut.GenerateConsoleOutputImage(text);
+            pbConsole.Image = ConsoleBitmap.Resample(fullImg, pbConsole.Size.ToRectangle());
+            pbConsole.Tag = fullImg;
+        }
+
+        private string PointString(System.Drawing.Point point)
+        {
+            return "(" + point.X + ", " + point.Y + ")";
         }
 
         private void btnBrowseDedicatedDir_Click(object sender, EventArgs e)
@@ -72,6 +162,15 @@ namespace EmpyrionManager
 
                         ////TODO: Write the output onto a Graphics layer, scale it down, let user double-click for details; get confirmation and data (files created, size, etc.) programmatically to display confirmation, and update the listview
                         txtShellOutput.AppendText(result);
+
+                        var consoleOut = new ConsoleBitmap();
+                        consoleOut.ForeColor = System.Drawing.Color.Yellow;
+                        consoleOut.BackColor = System.Drawing.Color.DarkBlue;
+                        consoleOut.OutputFont = new System.Drawing.Font("Courier New", 10, System.Drawing.FontStyle.Bold);
+                        var fullImg = consoleOut.GenerateConsoleOutputImage(result);
+                        pbConsole.Image = ConsoleBitmap.Resample(fullImg, pbConsole.Size.ToRectangle());
+                        pbConsole.Tag = fullImg;
+
                     }
                 }
 
@@ -177,6 +276,13 @@ namespace EmpyrionManager
             Application.DoEvents();
             var fader = new FadeHelper(lblBackupStatus);
             fader.ScheduleFade(2000);
+        }
+
+        private void pbConsole_Click(object sender, EventArgs e)
+        {
+            this.viewImageForm = new frmViewImage();
+            this.viewImageForm.DisplayImage = (System.Drawing.Image)pbConsole.Tag;
+            this.viewImageForm.ShowDialog();
         }
     }
 }

@@ -38,6 +38,8 @@
             this.txtBackupName = new System.Windows.Forms.TextBox();
             this.btnBackup = new System.Windows.Forms.Button();
             this.lblBackupStatus = new System.Windows.Forms.Label();
+            this.pbConsole = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbConsole)).BeginInit();
             this.SuspendLayout();
             // 
             // txtDedicatedDir
@@ -124,11 +126,21 @@
             this.lblBackupStatus.TabIndex = 8;
             this.lblBackupStatus.Text = "Backup Already Exists with this name";
             // 
+            // pbConsole
+            // 
+            this.pbConsole.Location = new System.Drawing.Point(31, 198);
+            this.pbConsole.Name = "pbConsole";
+            this.pbConsole.Size = new System.Drawing.Size(175, 139);
+            this.pbConsole.TabIndex = 9;
+            this.pbConsole.TabStop = false;
+            this.pbConsole.Click += new System.EventHandler(this.pbConsole_Click);
+            // 
             // frmEmpyrionMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(909, 549);
+            this.Controls.Add(this.pbConsole);
             this.Controls.Add(this.lblBackupStatus);
             this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.txtBackupName);
@@ -140,6 +152,7 @@
             this.Controls.Add(this.txtDedicatedDir);
             this.Name = "frmEmpyrionMain";
             this.Text = "Empyrion Manager";
+            ((System.ComponentModel.ISupportInitialize)(this.pbConsole)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -157,6 +170,7 @@
         private System.Windows.Forms.TextBox txtBackupName;
         private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.Label lblBackupStatus;
+        private System.Windows.Forms.PictureBox pbConsole;
         //private Inheritors.TransparentLabel lblBackupStatus;
     }
 }

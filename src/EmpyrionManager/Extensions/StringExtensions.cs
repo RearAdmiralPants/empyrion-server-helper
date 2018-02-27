@@ -1,6 +1,7 @@
 ﻿namespace EmpyrionManager.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     public static class StringExtensions
@@ -22,11 +23,21 @@
         public static bool ContainsInvalidPathCharacter(this string orig)
         {
             var invalid = Path.GetInvalidPathChars();
-            foreach (var badChar in invalid)
+            var fileInvalid = Path.GetInvalidFileNameChars();
+
+            var both = new List<char>();
+            both.AddRange(invalid);
+            both.AddRange(fileInvalid);
+
+            foreach (var badChar in both)
             {
                 if (orig.Contains(badChar.ToString()))
                 {
                     return true;
+                }
+                else
+                {
+                    //System.Windows.Forms.MessageBox.Show(orig + " doesn't contain '" + badChar.ToString() + "'!");
                 }
             }
 
