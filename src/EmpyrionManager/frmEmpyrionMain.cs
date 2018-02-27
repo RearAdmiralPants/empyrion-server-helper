@@ -154,23 +154,12 @@ README.TXT 8/8/96
                 startInfo.RedirectStandardOutput = true;
                 startInfo.RedirectStandardError = true;
 
+                string result;
                 using (var proc = Process.Start(startInfo))
                 {
                     using (StreamReader reader = proc.StandardOutput)
                     {
-                        string result = reader.ReadToEnd();
-
-                        ////TODO: Write the output onto a Graphics layer, scale it down, let user double-click for details; get confirmation and data (files created, size, etc.) programmatically to display confirmation, and update the listview
-                        txtShellOutput.AppendText(result);
-
-                        var consoleOut = new ConsoleBitmap();
-                        consoleOut.ForeColor = System.Drawing.Color.Yellow;
-                        consoleOut.BackColor = System.Drawing.Color.DarkBlue;
-                        consoleOut.OutputFont = new System.Drawing.Font("Courier New", 10, System.Drawing.FontStyle.Bold);
-                        var fullImg = consoleOut.GenerateConsoleOutputImage(result);
-                        pbConsole.Image = ConsoleBitmap.Resample(fullImg, pbConsole.Size.ToRectangle());
-                        pbConsole.Tag = fullImg;
-
+                        result = reader.ReadToEnd();
                     }
                 }
 
@@ -185,10 +174,26 @@ README.TXT 8/8/96
                 {
                     var backupSizeMb = backupSize / 1000000d;
                     lblBackupStatus.ForeColor = System.Drawing.Color.DarkGreen;
-                    lblBackupStatus.Text = "Backup successful (" + backupSizeMb.ToString("f2") + " MB)!";
+                    var successText = "Backup successful (" + backupSizeMb.ToString("f2") + " MB)!";
+                    lblBackupStatus.Text = successText;
                     lblBackupStatus.Visible = true;
                     var fader = new FadeHelper(lblBackupStatus);
                     fader.ScheduleFade(7500);
+
+                    if (result.Length > 2)
+                    {
+                        result += "\r\n" + successText;
+                        txtShellOutput.AppendText(result);
+
+                        var consoleOut = new ConsoleBitmap();
+                        consoleOut.ForeColor = System.Drawing.Color.Yellow;
+                        consoleOut.BackColor = System.Drawing.Color.DarkBlue;
+                        consoleOut.OutputFont = new System.Drawing.Font("Courier New", 10, System.Drawing.FontStyle.Bold);
+                        var fullImg = consoleOut.GenerateConsoleOutputImage(result);
+                        pbConsole.Image = ConsoleBitmap.Resample(fullImg, pbConsole.Size.ToRectangle());
+                        pbConsole.Tag = fullImg;
+                    }
+
                 }
                 else
                 {
@@ -252,7 +257,7 @@ README.TXT 8/8/96
                 return false;
             }
 
-            if (lowerName.ContainsInvalidPathCharacter())
+            if (lowerName.ContainsInvalidPathCharacter() || lowerName.ContainsInvalidFileCharacter())
             {
                 errorMessage = "Backup contains invalid character(s).";
                 return false;
