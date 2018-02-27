@@ -69,6 +69,8 @@ namespace EmpyrionManager
                     using (StreamReader reader = proc.StandardOutput)
                     {
                         string result = reader.ReadToEnd();
+
+                        ////TODO: Write the output onto a Graphics layer, scale it down, let user double-click for details; get confirmation and data (files created, size, etc.) programmatically to display confirmation, and update the listview
                         txtShellOutput.AppendText(result);
                     }
                 }
@@ -175,8 +177,6 @@ namespace EmpyrionManager
             Application.DoEvents();
             var fader = new FadeHelper(lblBackupStatus);
             fader.ScheduleFade(2000);
-            
-            //Application.DoEvents();
         }
     }
 }
