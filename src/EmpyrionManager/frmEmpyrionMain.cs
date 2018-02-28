@@ -32,10 +32,10 @@ namespace EmpyrionManager
     public partial class frmEmpyrionMain : Form
     {
         // App settings - reason why constants are not named properly
-        private const string _puttyLocation = "C:\\Users\\pklingman\\Desktop\\putty.exe";
-        private const string _backupEmpyrion = "BackupEmpyrion.bat";
-        private const string _backupDestination = "C:\\steamcmd\\empBackup\\";
-        private const int _minimumBackupSize = 5000;
+        //private const string _puttyLocation = "C:\\Users\\pklingman\\Desktop\\putty.exe";
+        //private const string _backupEmpyrion = "BackupEmpyrion.bat";
+        //private const string _backupDestination = "C:\\steamcmd\\empBackup\\";
+        //private const int _minimumBackupSize = 5000;
 
         private frmViewImage viewImageForm = null;
 
@@ -102,12 +102,16 @@ namespace EmpyrionManager
 
         private void btnBackup_Click(object sender, EventArgs e)
         {
+            var minimumBackupSize = Convert.ToInt32(AppSettingRetriever.GetAppSetting("MinimumBackupSize"));
+            var backupScript = AppSettingRetriever.GetAppSetting("BackupEmpyrionScript");
+            var backupDestination = AppSettingRetriever.GetAppSetting("BackupDestination");
+
             try
             {
                 var startInfo = new ProcessStartInfo();
                 startInfo.CreateNoWindow = true;
 
-                startInfo.FileName = this.GetSteamCmdDirectory(txtDedicatedDir.Text).TrailingBackslash() + _backupEmpyrion;
+                startInfo.FileName = this.GetSteamCmdDirectory(txtDedicatedDir.Text).TrailingBackslash() + backupScript;
                 startInfo.Arguments = txtBackupName.Text;
 
                 startInfo.UseShellExecute = false;
@@ -130,8 +134,8 @@ namespace EmpyrionManager
                     throw new ApplicationException("Attemped to create backup, but it does not exist; failure implied.");
                 }
 
-                var backupSize = DirectoryExtensions.FullDirectorySize(_backupDestination + txtBackupName.Text.TrailingBackslash());
-                if (backupSize > _minimumBackupSize)
+                var backupSize = DirectoryExtensions.FullDirectorySize(backupDestination + txtBackupName.Text.TrailingBackslash());
+                if (backupSize > minimumBackupSize)
                 {
                     var backupSizeMb = backupSize / 1000000d;
                     lblBackupStatus.ForeColor = System.Drawing.Color.DarkGreen;
@@ -184,16 +188,18 @@ namespace EmpyrionManager
             }
             else
             {
-                lblBackupStatus.Visible = false;
+                this.RestoreDefaultBackupLabel();
                 btnBackup.Enabled = true;
             }
         }
 
         private bool BackupExists(string backupName)
         {
-            foreach (var dir in Directory.GetDirectories(_backupDestination))
+            var backupDestination = AppSettingRetriever.GetAppSetting("BackupDestination");
+
+            foreach (var dir in Directory.GetDirectories(backupDestination))
             {
-                if (txtBackupName.Text.ToLowerInvariant() == dir.Replace(_backupDestination, "").ToLowerInvariant())
+                if (txtBackupName.Text.ToLowerInvariant() == dir.Replace(backupDestination, "").ToLowerInvariant())
                 {
                     return true;
                 }
@@ -249,6 +255,13 @@ namespace EmpyrionManager
             this.viewImageForm = new frmViewImage();
             this.viewImageForm.DisplayImage = (System.Drawing.Image)pbConsole.Tag;
             this.viewImageForm.ShowDialog();
+        }
+
+        private void RestoreDefaultBackupLabel()
+        {
+            lblBackupStatus.ForeColor = System.Drawing.Color.Black;
+            lblBackupStatus.Text = "Name of Backup";
+            lblBackupStatus.Visible = true;
         }
     }
 }

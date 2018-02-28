@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="Graphics\ConsoleBitmap.cs" />
     <Compile Include="Helpers\FadeHelper.cs" />
+    <Compile Include="Helpers\AppSettingRetriever.cs" />
     <Compile Include="Inheritors\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>

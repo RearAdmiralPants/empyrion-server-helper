@@ -125,6 +125,7 @@
             this.lblBackupStatus.Size = new System.Drawing.Size(182, 13);
             this.lblBackupStatus.TabIndex = 8;
             this.lblBackupStatus.Text = "Backup Already Exists with this name";
+            this.lblBackupStatus.Visible = false;
             // 
             // pbConsole
             // 
