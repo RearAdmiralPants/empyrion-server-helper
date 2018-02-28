@@ -44,6 +44,11 @@ namespace EmpyrionManager
             InitializeComponent();
         }
 
+        private void AppendShellText(string text)
+        {
+            Invoke(new MethodInvoker(() => txtShellOutput.AppendText(text)));
+        }
+
         private void btnLaunchTelnet_Click(object sender, EventArgs e)
         {
             Task.Run(() => LoginToTelnet());
@@ -53,13 +58,31 @@ namespace EmpyrionManager
         {
             using (var client = new Client("192.168.2.25", 30023, new System.Threading.CancellationToken()))
             {
-                var didLogin = await client.TryLoginAsync("pklingman", "Emmau$444", 5000);
-                MessageBox.Show("Logged in: " + didLogin.ToString());
-                if (didLogin)
+                // var didLogin = await client.TryLoginAsync("pklingman", "Emmau$444", 5000);
+                var foundColon = await client.TerminatedReadAsync(": ", new TimeSpan(0, 0, 10));
+
+
+                //MessageBox.Show("Found colon: " + foundColon.ToString());
+                this.AppendShellText(foundColon);
+
+                if (foundColon.Length > 5)
                 {
-                    //await client.WriteLine("dir");
-                    string s = await client.TerminatedReadAsync(">", TimeSpan.FromMilliseconds(5000));
-                    MessageBox.Show(s);
+                    await client.WriteLine("pklingman\r\n");
+                    foundColon = await client.TerminatedReadAsync(": ", new TimeSpan(0, 0, 10));
+                    this.AppendShellText(foundColon);
+                    if (foundColon.Contains("password"))
+                    {
+                        await client.WriteLine("(password)\r\n");
+                        foundColon = await client.TerminatedReadAsync(">", new TimeSpan(0, 0, 10));
+                        this.AppendShellText(foundColon);
+                        if (foundColon.Length > 3)
+                        {
+                            await client.WriteLine("dir\r\n");
+                            foundColon = await client.TerminatedReadAsync(">", new TimeSpan(0, 0, 10));
+                            this.AppendShellText(foundColon);
+
+                        }
+                    }
                 }
             }
         }
