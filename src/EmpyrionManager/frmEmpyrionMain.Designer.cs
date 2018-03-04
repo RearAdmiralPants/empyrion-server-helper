@@ -39,6 +39,7 @@
             this.btnBackup = new System.Windows.Forms.Button();
             this.lblBackupStatus = new System.Windows.Forms.Label();
             this.pbConsole = new System.Windows.Forms.PictureBox();
+            this.btnStartServer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbConsole)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,7 +71,7 @@
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(13, 514);
+            this.btnTest.Location = new System.Drawing.Point(357, 514);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(75, 23);
             this.btnTest.TabIndex = 3;
@@ -136,11 +137,22 @@
             this.pbConsole.TabStop = false;
             this.pbConsole.Click += new System.EventHandler(this.pbConsole_Click);
             // 
+            // btnStartServer
+            // 
+            this.btnStartServer.Location = new System.Drawing.Point(12, 514);
+            this.btnStartServer.Name = "btnStartServer";
+            this.btnStartServer.Size = new System.Drawing.Size(75, 23);
+            this.btnStartServer.TabIndex = 10;
+            this.btnStartServer.Text = "Start Server";
+            this.btnStartServer.UseVisualStyleBackColor = true;
+            this.btnStartServer.Click += new System.EventHandler(this.btnStartServer_Click);
+            // 
             // frmEmpyrionMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(909, 549);
+            this.Controls.Add(this.btnStartServer);
             this.Controls.Add(this.pbConsole);
             this.Controls.Add(this.lblBackupStatus);
             this.Controls.Add(this.btnBackup);
@@ -172,6 +184,7 @@
         private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.Label lblBackupStatus;
         private System.Windows.Forms.PictureBox pbConsole;
+        private System.Windows.Forms.Button btnStartServer;
         //private Inheritors.TransparentLabel lblBackupStatus;
     }
 }

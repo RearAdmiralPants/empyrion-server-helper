@@ -263,5 +263,74 @@ namespace EmpyrionManager
             lblBackupStatus.Text = "Name of Backup";
             lblBackupStatus.Visible = true;
         }
+
+        private void btnStartServer_Click(object sender, EventArgs e)
+        {
+            if (this.IsServerRunning())
+            {
+                MessageBox.Show("Can't start server; an instance is already running.");
+                return;
+            }
+
+            var serverProc = this.StartServer();
+
+            if (serverProc != null)
+            {
+                this.AppendShellText("Server is running at PID " + serverProc.Id.ToString() + ".");
+            }
+        }
+
+        private Process StartServer()
+        {
+            return null; // Currently doesn't work
+            var dedicatedDir = txtDedicatedDir.Text.TrailingBackslash();
+
+            var startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = true;
+
+            startInfo.FileName = dedicatedDir + "EmpyrionDedicated_FromMgr.cmd";
+
+            startInfo.UseShellExecute = false;
+
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+
+            string result;
+            using (var proc = Process.Start(startInfo))
+            {
+                using (StreamReader reader = proc.StandardOutput)
+                {
+                    result = reader.ReadToEnd();
+                }
+            }
+
+            this.AppendShellText("\r\nAttempted to start dedicated server:");
+            this.AppendShellText("\r\n" + result + "\r\n");
+
+            Process serverProc = null;
+            foreach (var process in Process.GetProcesses())
+            {
+                if (process.ProcessName.ToLowerInvariant().Contains("empyriondedicated"))
+                {
+                    serverProc = process;
+                    break;
+                }
+            }
+
+            return serverProc;
+        }
+
+        private bool IsServerRunning()
+        {
+            foreach (var process in Process.GetProcesses())
+            {
+                if (process.ProcessName.ToLowerInvariant().Contains("empyriondedicated"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
