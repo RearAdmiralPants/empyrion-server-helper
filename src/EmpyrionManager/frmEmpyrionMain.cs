@@ -36,6 +36,7 @@ namespace EmpyrionManager
         //private const string _backupEmpyrion = "BackupEmpyrion.bat";
         //private const string _backupDestination = "C:\\steamcmd\\empBackup\\";
         //private const int _minimumBackupSize = 5000;
+        private const string DEDICATED_SERVER_PROCESSNAME = "empyriondedicated";
 
         private frmViewImage viewImageForm = null;
 
@@ -58,7 +59,6 @@ namespace EmpyrionManager
         {
             using (var client = new Client("192.168.2.25", 30023, new System.Threading.CancellationToken()))
             {
-                // var didLogin = await client.TryLoginAsync("pklingman", "Emmau$444", 5000);
                 var foundColon = await client.TerminatedReadAsync(": ", new TimeSpan(0, 0, 10));
 
 
@@ -310,7 +310,7 @@ namespace EmpyrionManager
             Process serverProc = null;
             foreach (var process in Process.GetProcesses())
             {
-                if (process.ProcessName.ToLowerInvariant().Contains("empyriondedicated"))
+                if (process.ProcessName.ToLowerInvariant().Contains(DEDICATED_SERVER_PROCESSNAME))
                 {
                     serverProc = process;
                     break;
@@ -324,7 +324,7 @@ namespace EmpyrionManager
         {
             foreach (var process in Process.GetProcesses())
             {
-                if (process.ProcessName.ToLowerInvariant().Contains("empyriondedicated"))
+                if (process.ProcessName.ToLowerInvariant().Contains(DEDICATED_SERVER_PROCESSNAME))
                 {
                     return true;
                 }
