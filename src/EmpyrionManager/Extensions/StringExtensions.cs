@@ -7,6 +7,26 @@
     public static class StringExtensions
     {
         /// <summary>
+        /// Adds a preceding string to a given string if it doesn't already begin with that string.
+        /// </summary>
+        /// <param name="orig">The string to modify if it doesn't begin with <paramref name="precede"/>.</param>
+        /// <param name="precede">The string to prepend to <paramref name="orig"/> if it doesn't already begin with it.</param>
+        /// <returns>The original string if it was not modified; otherwise, the modified string.</returns>
+        public static string PrecedingString(this string orig, string precede)
+        {
+            if (!orig.ToLowerInvariant().StartsWith(precede.ToLowerInvariant()))
+            {
+                return precede + orig;
+            }
+            return orig;
+        }
+
+        public static string PrecedingBackslash(this string orig)
+        {
+            return orig.PrecedingString("\\");
+        }
+
+        /// <summary>
         /// Adds a trailing string to a given string if it doesn't already end with that string.
         /// </summary>
         /// <param name="orig">The string to modify if it doesn't end with <paramref name="trail"/></param>

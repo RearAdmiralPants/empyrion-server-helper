@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LiteGuard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\LiteGuard.1.1.0\lib\net35\LiteGuard.dll</HintPath>
       <Private>True</Private>
@@ -43,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +59,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\Backup.cs" />
+    <Compile Include="Data\BackupStore.cs" />
+    <Compile Include="Data\DTO\BackupInstance.cs" />
+    <Compile Include="Data\DTO\Instance.cs" />
     <Compile Include="Extensions\DirectoryExtensions.cs" />
     <Compile Include="Extensions\SizeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -75,6 +84,8 @@
     <Compile Include="Inheritors\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Managers\BackupManager.cs" />
+    <Compile Include="Mappers\Mappings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmEmpyrionMain.resx">

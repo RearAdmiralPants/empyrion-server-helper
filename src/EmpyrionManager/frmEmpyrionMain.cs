@@ -26,8 +26,10 @@ namespace EmpyrionManager
     using Extensions;
     using Helpers;
     using Graphics;
+    using Managers;
 
     using PrimS.Telnet;
+    using AutoMapper;
 
     public partial class frmEmpyrionMain : Form
     {
@@ -40,9 +42,24 @@ namespace EmpyrionManager
 
         private frmViewImage viewImageForm = null;
 
+        private BackupManager backupManager = null;
+
+        private IMapper mapper;
+
         public frmEmpyrionMain()
         {
             InitializeComponent();
+
+            var minimumBackupSize = Convert.ToInt32(AppSettingRetriever.GetAppSetting("MinimumBackupSize"));
+            var backupScript = AppSettingRetriever.GetAppSetting("BackupEmpyrionScript");
+            var backupDestination = AppSettingRetriever.GetAppSetting("BackupDestination");
+
+            this.backupManager = new BackupManager();
+            this.backupManager.BackupRootDirectory = backupDestination;
+            this.backupManager.BackupScript = backupScript;
+            this.backupManager.MinimumBackupSize = minimumBackupSize;
+
+            this.mapper = Mappers.Mappings.GetMappings().CreateMapper();
         }
 
         private void AppendShellText(string text)
@@ -108,6 +125,8 @@ namespace EmpyrionManager
 
             try
             {
+                
+
                 var startInfo = new ProcessStartInfo();
                 startInfo.CreateNoWindow = true;
 

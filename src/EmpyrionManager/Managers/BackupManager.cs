@@ -31,13 +31,21 @@ namespace EmpyrionManager.Managers
 
         public string BackupRootDirectory { get; set; }
 
+        public int MinimumBackupSize { get; set; }
+
+        public string BackupScript { get; set; }
+
+
+
         public BackupManager() { }
 
         private string PathToBackup(string backupName) {
             return BackupRootDirectory.TrailingBackslash() + backupName.TrailingBackslash();            
         }
 
-        private Backup BackupSaves(string name) {
+        
+
+        private Backup StageBackupSaves(string name) {
             var result = new Backup();
 
             result.Name = name;
@@ -75,7 +83,7 @@ namespace EmpyrionManager.Managers
         private string GetPathRelativeToSaveDir(string file, Backup backup) {
             var result = file.Substring(backup.SourceSavegamePath.Length);
 
-            ////TODO: Write extension method
+            ////TODO: Write extension method (?)
             if (result.StartsWith("\\")) {
                 result = result.Substring(1);
             }
@@ -83,3 +91,4 @@ namespace EmpyrionManager.Managers
         }
     }
 }
+ 
