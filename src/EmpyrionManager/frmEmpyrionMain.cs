@@ -51,12 +51,10 @@ namespace EmpyrionManager
             InitializeComponent();
 
             var minimumBackupSize = Convert.ToInt32(AppSettingRetriever.GetAppSetting("MinimumBackupSize"));
-            var backupScript = AppSettingRetriever.GetAppSetting("BackupEmpyrionScript");
             var backupDestination = AppSettingRetriever.GetAppSetting("BackupDestination");
 
             this.backupManager = new BackupManager();
             this.backupManager.BackupRootDirectory = backupDestination;
-            this.backupManager.BackupScript = backupScript;
             this.backupManager.MinimumBackupSize = minimumBackupSize;
 
             this.mapper = Mappers.Mappings.GetMappings().CreateMapper();
@@ -350,6 +348,113 @@ namespace EmpyrionManager
             }
 
             return false;
+        }
+
+        private void btnOpacityTest_Click(object sender, EventArgs e)
+        {
+            pbConsole.Test();
+        }
+
+        private void frmEmpyrionMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            ////TODO: Use new BackupManager for this
+            var backupDestination = AppSettingRetriever.GetAppSetting("BackupDestination");
+
+            foreach (var backup in Directory.GetDirectories(backupDestination))
+            {
+                var listItem = new ListViewItem(backup.LastSplitElement('\\'));
+                listItem.Tag = backup;
+                lstBackups.Items.Add(listItem);
+            }
+        }
+
+        private void btnRestore_Click(object sender, EventArgs e)
+        {
+            var backupDestination = AppSettingRetriever.GetAppSetting("BackupDestination");
+            var savesDir = AppSettingRetriever.GetAppSetting("SavesDirectory");
+            
+            if (IsServerRunning())
+            {
+                MessageBox.Show("Cannot restore a save game while the server is running. Exit the server and try again.");
+            }
+
+            if (!this.EmergencyBackup())
+            {
+                MessageBox.Show("Transient backup failed. Restore not proceeding.");
+            }
+
+            MessageBox.Show("Proceed?");
+            foreach (var saveDir in Directory.GetDirectories(savesDir))
+            {
+                Directory.Delete(saveDir, true);
+            }
+
+            var restoreItem = lstBackups.SelectedItems[0];
+            var restoreDir = (string)restoreItem.Tag;
+            this.CopyDir(restoreDir, savesDir);
+
+            this.AppendShellText("Restore complete.");
+        }
+
+        private bool EmergencyBackup()
+        {
+            try
+            {
+                var emergDest = AppSettingRetriever.GetAppSetting("EmergSavesDirectory");
+                var toBackup = AppSettingRetriever.GetAppSetting("EmergSourceDirectory");
+                var destDir = emergDest.TrailingBackslash() + "EmergBackup" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Millisecond.ToString() + "\\";
+                Directory.CreateDirectory(destDir);
+
+                this.CopyDir(toBackup, destDir);
+                var sizeCalc = new DirectoryInfo(destDir);
+                this.AppendShellText("\r\nTransient backup completed: " + sizeCalc.FullDirectorySize().ToString() + " bytes.");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return false;
+            }
+        }
+
+        private void CopyDir(string path, string dest)
+        {
+            foreach (var dir in Directory.GetDirectories(path))
+            {
+                var totalLog = txtShellOutput.Text;
+
+                if (!Directory.Exists(dest.TrailingBackslash() + dir.LastSplitElement('\\')))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(dest.TrailingBackslash() + dir.LastSplitElement('\\')));
+                }
+                this.CopyDir(dir, dest.TrailingBackslash() + dir.LastSplitElement('\\'));
+            }
+
+            foreach (var file in Directory.GetFiles(path))
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(dest.TrailingBackslash()))) {
+                    Directory.CreateDirectory(Path.GetDirectoryName(dest.TrailingBackslash()));
+                }
+                var destFile = dest.TrailingBackslash() + Path.GetFileName(file);
+                File.Copy(file, destFile);
+            }
+        }
+
+        private void btnClearTransient_Click(object sender, EventArgs e)
+        {
+            var emergDest = AppSettingRetriever.GetAppSetting("EmergSavesDirectory");
+
+            if (MessageBox.Show("Delete all transient directories used during restore operations? Make sure all restores are successful and the game is in a playable state.", "Delete Transient Confirmation", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            Directory.Delete(emergDest, true);
         }
     }
 }

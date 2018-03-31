@@ -33,10 +33,6 @@ namespace EmpyrionManager.Managers
 
         public int MinimumBackupSize { get; set; }
 
-        public string BackupScript { get; set; }
-
-
-
         public BackupManager() { }
 
         private string PathToBackup(string backupName) {

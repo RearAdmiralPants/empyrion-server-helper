@@ -89,5 +89,11 @@
 
             return false;
         }
+
+        public static string LastSplitElement(this string orig, char splitter)
+        {
+            var elements = orig.Split(splitter);
+            return elements[elements.Length - 1];
+        }
     }
 }

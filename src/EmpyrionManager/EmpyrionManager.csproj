@@ -79,6 +79,10 @@
       <DependentUpon>frmViewImage.cs</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ConsoleBitmap.cs" />
+    <Compile Include="Graphics\FadingPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Graphics\ImageTransparency.cs" />
     <Compile Include="Helpers\FadeHelper.cs" />
     <Compile Include="Helpers\AppSettingRetriever.cs" />
     <Compile Include="Inheritors\TransparentLabel.cs">
