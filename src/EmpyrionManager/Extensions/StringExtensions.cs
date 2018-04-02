@@ -95,5 +95,10 @@
             var elements = orig.Split(splitter);
             return elements[elements.Length - 1];
         }
+
+        public static string LastBackslashElement(this string orig)
+        {
+            return LastSplitElement(orig, '\\');
+        }
     }
 }

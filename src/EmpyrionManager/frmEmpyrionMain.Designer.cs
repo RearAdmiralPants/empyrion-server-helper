@@ -38,12 +38,12 @@
             this.txtBackupName = new System.Windows.Forms.TextBox();
             this.btnBackup = new System.Windows.Forms.Button();
             this.lblBackupStatus = new System.Windows.Forms.Label();
-            this.pbConsole = new EmpyrionManager.Graphics.FadingPictureBox();
             this.btnStartServer = new System.Windows.Forms.Button();
             this.btnOpacityTest = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnRestore = new System.Windows.Forms.Button();
             this.btnClearTransient = new System.Windows.Forms.Button();
+            this.pbConsole = new EmpyrionManager.Graphics.FadingPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbConsole)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,10 +69,10 @@
             // 
             this.lstBackups.Location = new System.Drawing.Point(12, 283);
             this.lstBackups.Name = "lstBackups";
-            this.lstBackups.Size = new System.Drawing.Size(404, 323);
+            this.lstBackups.Size = new System.Drawing.Size(708, 323);
             this.lstBackups.TabIndex = 2;
             this.lstBackups.UseCompatibleStateImageBehavior = false;
-            this.lstBackups.View = System.Windows.Forms.View.List;
+            this.lstBackups.View = System.Windows.Forms.View.Details;
             // 
             // btnTest
             // 
@@ -134,18 +134,6 @@
             this.lblBackupStatus.Text = "Backup Already Exists with this name";
             this.lblBackupStatus.Visible = false;
             // 
-            // pbConsole
-            // 
-            this.pbConsole.FadeDelaySeconds = 5D;
-            this.pbConsole.FadeSeconds = -1D;
-            this.pbConsole.FadeStepSeconds = 2D;
-            this.pbConsole.Location = new System.Drawing.Point(12, 41);
-            this.pbConsole.Name = "pbConsole";
-            this.pbConsole.Size = new System.Drawing.Size(175, 184);
-            this.pbConsole.TabIndex = 9;
-            this.pbConsole.TabStop = false;
-            this.pbConsole.Click += new System.EventHandler(this.pbConsole_Click);
-            // 
             // btnStartServer
             // 
             this.btnStartServer.Enabled = false;
@@ -163,7 +151,7 @@
             this.btnOpacityTest.Name = "btnOpacityTest";
             this.btnOpacityTest.Size = new System.Drawing.Size(75, 23);
             this.btnOpacityTest.TabIndex = 11;
-            this.btnOpacityTest.Text = "Opc Test";
+            this.btnOpacityTest.Text = "Clear";
             this.btnOpacityTest.UseVisualStyleBackColor = true;
             this.btnOpacityTest.Click += new System.EventHandler(this.btnOpacityTest_Click);
             // 
@@ -179,7 +167,7 @@
             // 
             // btnRestore
             // 
-            this.btnRestore.Location = new System.Drawing.Point(341, 612);
+            this.btnRestore.Location = new System.Drawing.Point(645, 612);
             this.btnRestore.Name = "btnRestore";
             this.btnRestore.Size = new System.Drawing.Size(75, 23);
             this.btnRestore.TabIndex = 13;
@@ -189,13 +177,27 @@
             // 
             // btnClearTransient
             // 
-            this.btnClearTransient.Location = new System.Drawing.Point(260, 612);
+            this.btnClearTransient.Location = new System.Drawing.Point(318, 612);
             this.btnClearTransient.Name = "btnClearTransient";
             this.btnClearTransient.Size = new System.Drawing.Size(75, 23);
             this.btnClearTransient.TabIndex = 14;
             this.btnClearTransient.Text = "Clear Mids";
             this.btnClearTransient.UseVisualStyleBackColor = true;
             this.btnClearTransient.Click += new System.EventHandler(this.btnClearTransient_Click);
+            // 
+            // pbConsole
+            // 
+            this.pbConsole.FadeDelaySeconds = 5D;
+            this.pbConsole.FadeSeconds = -1D;
+            this.pbConsole.FadeStepSeconds = 2D;
+            this.pbConsole.Finished = false;
+            this.pbConsole.Location = new System.Drawing.Point(12, 41);
+            this.pbConsole.Log = "";
+            this.pbConsole.Name = "pbConsole";
+            this.pbConsole.Size = new System.Drawing.Size(175, 184);
+            this.pbConsole.TabIndex = 9;
+            this.pbConsole.TabStop = false;
+            this.pbConsole.Click += new System.EventHandler(this.pbConsole_Click);
             // 
             // frmEmpyrionMain
             // 

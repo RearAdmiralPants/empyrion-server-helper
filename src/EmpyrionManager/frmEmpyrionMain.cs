@@ -18,6 +18,7 @@
 namespace EmpyrionManager
 {
     using System;
+    using System.Collections.Generic;
     using System.Windows.Forms;
     using System.Diagnostics;
     using System.IO;
@@ -258,6 +259,9 @@ namespace EmpyrionManager
 
         private void btnTest_Click(object sender, EventArgs e)
         {
+            this.AppendShellText(pbConsole.Log);
+
+            /*
             lblBackupStatus.ForeColor = System.Drawing.Color.Green;
             lblBackupStatus.Text = "This is only a test; do not adjust your set.";
             lblBackupStatus.Visible = true;
@@ -265,6 +269,7 @@ namespace EmpyrionManager
             Application.DoEvents();
             var fader = new FadeHelper(lblBackupStatus);
             fader.ScheduleFade(2000);
+            */
         }
 
         private void pbConsole_Click(object sender, EventArgs e)
@@ -352,7 +357,7 @@ namespace EmpyrionManager
 
         private void btnOpacityTest_Click(object sender, EventArgs e)
         {
-            pbConsole.Test();
+            pbConsole.StartFade();
         }
 
         private void frmEmpyrionMain_Load(object sender, EventArgs e)
@@ -364,11 +369,43 @@ namespace EmpyrionManager
         {
             ////TODO: Use new BackupManager for this
             var backupDestination = AppSettingRetriever.GetAppSetting("BackupDestination");
+            lstBackups.Columns.Clear();
+            var listCol = new ColumnHeader();
+            listCol.Name = "Name";
+            listCol.Text = "Name";
+            listCol.Width = lstBackups.Width / 2;
+            lstBackups.Columns.Add(listCol);
+            listCol = new ColumnHeader();
+            listCol.Name = "Date";
+            listCol.Text = "Date";
+            listCol.Width = lstBackups.Width / 2;
+            lstBackups.Columns.Add(listCol);
+
+            var listBackups = new List<Abstractions.Backup>();
 
             foreach (var backup in Directory.GetDirectories(backupDestination))
             {
-                var listItem = new ListViewItem(backup.LastSplitElement('\\'));
-                listItem.Tag = backup;
+                var dirInfo = new DirectoryInfo(backup);
+                var absBackup = new Abstractions.Backup();
+                absBackup.Name = backup.LastBackslashElement();
+                absBackup.LastModifiedDate = dirInfo.LastWriteTimeUtc;
+                absBackup.DestinationPath = backup;
+
+                listBackups.Add(absBackup);
+            }
+
+            listBackups.Sort((a, b) =>
+            {
+                return b.LastModifiedDate.CompareTo(a.LastModifiedDate);
+            });
+
+            foreach (var absBackup in listBackups)
+            {
+                var listItem = new ListViewItem(absBackup.Name);
+
+                listItem.Tag = absBackup.DestinationPath;
+                //listItem.SubItems.Add(backup.LastBackslashElement());
+                listItem.SubItems.Add(absBackup.LastModifiedDate.ToLocalTime().ToString());
                 lstBackups.Items.Add(listItem);
             }
         }

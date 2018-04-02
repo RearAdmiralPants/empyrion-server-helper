@@ -1,8 +1,11 @@
 namespace EmpyrionManager.Abstractions {
+    using System;
     using System.Collections.Generic;
 
     public class Backup {
         public string Name { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         public string SourceSavegamePath { get; set; }
 
