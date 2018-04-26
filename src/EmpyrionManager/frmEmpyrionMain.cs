@@ -40,6 +40,7 @@ namespace EmpyrionManager
         //private const string _backupDestination = "C:\\steamcmd\\empBackup\\";
         //private const int _minimumBackupSize = 5000;
         private const string DEDICATED_SERVER_PROCESSNAME = "empyriondedicated";
+        private const string DEDICATED_LAUNCHER_PROCESSNAME = "empyrionlauncher";
 
         private frmViewImage viewImageForm = null;
 
@@ -302,6 +303,21 @@ namespace EmpyrionManager
             }
         }
 
+        private Process StartServerNew()
+        {
+            var dedicatedDir = txtDedicatedDir.Text.TrailingBackslash();
+
+            var startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = true;
+            startInfo.FileName = dedicatedDir + "EmpyrionLauncher.exe";
+            startInfo.Arguments = "-startDedi";
+
+            startInfo.UseShellExecute = true;
+            startInfo.WorkingDirectory = dedicatedDir;
+
+            return Process.Start(startInfo);
+        }
+
         private Process StartServer()
         {
             return null; // Currently doesn't work
@@ -350,6 +366,10 @@ namespace EmpyrionManager
                 {
                     return true;
                 }
+                else if (process.ProcessName.ToLowerInvariant().Contains(DEDICATED_LAUNCHER_PROCESSNAME))
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -369,6 +389,7 @@ namespace EmpyrionManager
         {
             ////TODO: Use new BackupManager for this
             var backupDestination = AppSettingRetriever.GetAppSetting("BackupDestination");
+            lstBackups.Items.Clear();
             lstBackups.Columns.Clear();
             var listCol = new ColumnHeader();
             listCol.Name = "Name";
@@ -433,7 +454,7 @@ namespace EmpyrionManager
 
             var restoreItem = lstBackups.SelectedItems[0];
             var restoreDir = (string)restoreItem.Tag;
-            this.CopyDir(restoreDir, savesDir);
+            IOHelpers.CopyDir(restoreDir, savesDir);
 
             this.AppendShellText("Restore complete.");
         }
@@ -463,7 +484,7 @@ namespace EmpyrionManager
         {
             foreach (var dir in Directory.GetDirectories(path))
             {
-                var totalLog = txtShellOutput.Text;
+                // var totalLog = txtShellOutput.Text; (?)
 
                 if (!Directory.Exists(dest.TrailingBackslash() + dir.LastSplitElement('\\')))
                 {
@@ -492,6 +513,15 @@ namespace EmpyrionManager
             }
 
             Directory.Delete(emergDest, true);
+        }
+
+        private void txtBackupName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar== (char)Keys.Enter || e.KeyChar == (char)Keys.Return)
+            {
+                e.Handled = true;
+                this.btnBackup_Click(sender, e);
+            }
         }
     }
 }

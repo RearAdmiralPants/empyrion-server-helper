@@ -85,6 +85,7 @@
     <Compile Include="Graphics\ImageTransparency.cs" />
     <Compile Include="Helpers\FadeHelper.cs" />
     <Compile Include="Helpers\AppSettingRetriever.cs" />
+    <Compile Include="Helpers\IOHelpers.cs" />
     <Compile Include="Inheritors\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>

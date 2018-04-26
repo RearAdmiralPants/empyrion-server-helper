@@ -67,16 +67,16 @@
             // 
             // lstBackups
             // 
-            this.lstBackups.Location = new System.Drawing.Point(12, 283);
+            this.lstBackups.Location = new System.Drawing.Point(422, 12);
             this.lstBackups.Name = "lstBackups";
-            this.lstBackups.Size = new System.Drawing.Size(708, 323);
+            this.lstBackups.Size = new System.Drawing.Size(604, 213);
             this.lstBackups.TabIndex = 2;
             this.lstBackups.UseCompatibleStateImageBehavior = false;
             this.lstBackups.View = System.Windows.Forms.View.Details;
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(950, 612);
+            this.btnTest.Location = new System.Drawing.Point(904, 468);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(75, 23);
             this.btnTest.TabIndex = 3;
@@ -87,7 +87,7 @@
             // btnLaunchTelnet
             // 
             this.btnLaunchTelnet.Enabled = false;
-            this.btnLaunchTelnet.Location = new System.Drawing.Point(950, 385);
+            this.btnLaunchTelnet.Location = new System.Drawing.Point(539, 527);
             this.btnLaunchTelnet.Name = "btnLaunchTelnet";
             this.btnLaunchTelnet.Size = new System.Drawing.Size(75, 23);
             this.btnLaunchTelnet.TabIndex = 4;
@@ -97,24 +97,25 @@
             // 
             // txtShellOutput
             // 
-            this.txtShellOutput.Location = new System.Drawing.Point(423, 10);
+            this.txtShellOutput.Location = new System.Drawing.Point(12, 268);
             this.txtShellOutput.Multiline = true;
             this.txtShellOutput.Name = "txtShellOutput";
             this.txtShellOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtShellOutput.Size = new System.Drawing.Size(602, 215);
+            this.txtShellOutput.Size = new System.Drawing.Size(602, 253);
             this.txtShellOutput.TabIndex = 5;
             // 
             // txtBackupName
             // 
-            this.txtBackupName.Location = new System.Drawing.Point(423, 231);
+            this.txtBackupName.Location = new System.Drawing.Point(12, 229);
             this.txtBackupName.Name = "txtBackupName";
-            this.txtBackupName.Size = new System.Drawing.Size(521, 20);
+            this.txtBackupName.Size = new System.Drawing.Size(404, 20);
             this.txtBackupName.TabIndex = 6;
             this.txtBackupName.TextChanged += new System.EventHandler(this.txtBackupName_TextChanged);
+            this.txtBackupName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBackupName_KeyPress);
             // 
             // btnBackup
             // 
-            this.btnBackup.Location = new System.Drawing.Point(950, 231);
+            this.btnBackup.Location = new System.Drawing.Point(341, 202);
             this.btnBackup.Name = "btnBackup";
             this.btnBackup.Size = new System.Drawing.Size(75, 23);
             this.btnBackup.TabIndex = 7;
@@ -127,7 +128,7 @@
             this.lblBackupStatus.AutoSize = true;
             this.lblBackupStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBackupStatus.ForeColor = System.Drawing.Color.Red;
-            this.lblBackupStatus.Location = new System.Drawing.Point(420, 254);
+            this.lblBackupStatus.Location = new System.Drawing.Point(12, 252);
             this.lblBackupStatus.Name = "lblBackupStatus";
             this.lblBackupStatus.Size = new System.Drawing.Size(182, 13);
             this.lblBackupStatus.TabIndex = 8;
@@ -137,7 +138,7 @@
             // btnStartServer
             // 
             this.btnStartServer.Enabled = false;
-            this.btnStartServer.Location = new System.Drawing.Point(950, 414);
+            this.btnStartServer.Location = new System.Drawing.Point(12, 527);
             this.btnStartServer.Name = "btnStartServer";
             this.btnStartServer.Size = new System.Drawing.Size(75, 23);
             this.btnStartServer.TabIndex = 10;
@@ -157,7 +158,7 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(12, 612);
+            this.btnRefresh.Location = new System.Drawing.Point(422, 229);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnRefresh.TabIndex = 12;
@@ -167,7 +168,7 @@
             // 
             // btnRestore
             // 
-            this.btnRestore.Location = new System.Drawing.Point(645, 612);
+            this.btnRestore.Location = new System.Drawing.Point(951, 229);
             this.btnRestore.Name = "btnRestore";
             this.btnRestore.Size = new System.Drawing.Size(75, 23);
             this.btnRestore.TabIndex = 13;
@@ -177,7 +178,7 @@
             // 
             // btnClearTransient
             // 
-            this.btnClearTransient.Location = new System.Drawing.Point(318, 612);
+            this.btnClearTransient.Location = new System.Drawing.Point(696, 229);
             this.btnClearTransient.Name = "btnClearTransient";
             this.btnClearTransient.Size = new System.Drawing.Size(75, 23);
             this.btnClearTransient.TabIndex = 14;
@@ -203,7 +204,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1037, 647);
+            this.ClientSize = new System.Drawing.Size(1037, 559);
             this.Controls.Add(this.btnClearTransient);
             this.Controls.Add(this.btnRestore);
             this.Controls.Add(this.btnRefresh);

@@ -39,8 +39,6 @@ namespace EmpyrionManager.Managers
             return BackupRootDirectory.TrailingBackslash() + backupName.TrailingBackslash();            
         }
 
-        
-
         private Backup StageBackupSaves(string name) {
             var result = new Backup();
 
