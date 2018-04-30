@@ -1,8 +1,7 @@
 ﻿namespace EmpyrionManager.Extensions
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     public static class StringExtensions
     {
@@ -60,6 +59,10 @@
         {
             var invalid = Path.GetInvalidPathChars();
 
+            var found = orig.ToCharArray().FirstOrDefault(c => invalid.Contains(c));
+            return found != default(char);
+
+            /*
             foreach (var badChar in invalid)
             {
                 if (orig.Contains(badChar.ToString()))
@@ -69,6 +72,7 @@
             }
 
             return false;
+            */
         }
 
         /// <summary>
@@ -79,6 +83,11 @@
         public static bool ContainsInvalidFileCharacter(this string orig)
         {
             var invalid = Path.GetInvalidFileNameChars();
+
+            var found = orig.ToCharArray().FirstOrDefault(c => invalid.Contains(c));
+            return found != default(char);
+
+            /*
             foreach (var badChar in invalid)
             {
                 if (orig.Contains(badChar.ToString()))
@@ -88,8 +97,15 @@
             }
 
             return false;
+            */
         }
 
+        /// <summary>
+        /// Retrieves the final element of a split operation.
+        /// </summary>
+        /// <param name="orig">The string whose last split element to return.</param>
+        /// <param name="splitter">The character used for the split operation.</param>
+        /// <returns>The final element of the array resulting from splitting the string with <paramref name="splitter"/>.</returns>
         public static string LastSplitElement(this string orig, char splitter)
         {
             var elements = orig.Split(splitter);
