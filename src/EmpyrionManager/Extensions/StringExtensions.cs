@@ -57,9 +57,11 @@
         /// <returns>A value indicating whether <paramref name="orig"/> contains an invalid character.</returns>
         public static bool ContainsInvalidPathCharacter(this string orig)
         {
-            var invalid = Path.GetInvalidPathChars();
+            var invalidDir = Path.GetInvalidPathChars();
+            var invalidFile = Path.GetInvalidFileNameChars();
+            var chars = orig.ToCharArray();
 
-            var found = orig.ToCharArray().FirstOrDefault(c => invalid.Contains(c));
+            var found = chars.FirstOrDefault(c => invalidDir.Contains(c));
             return found != default(char);
 
             /*
