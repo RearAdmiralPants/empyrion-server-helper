@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\Backup.cs" />
+    <Compile Include="Abstractions\BackupComponent.cs" />
+    <Compile Include="BackupComponentType.cs" />
     <Compile Include="Data\BackupStore.cs" />
     <Compile Include="Data\DTO\BackupInstance.cs" />
     <Compile Include="Data\DTO\Instance.cs" />

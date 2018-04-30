@@ -69,10 +69,12 @@
             this.InitializeTimers();
         }
 
-        public FadingPictureBox(double fadeStepSeconds, double fadeDelaySeconds)
+        public FadingPictureBox(double fadeStepSeconds, double fadeDelaySeconds) : base()
         {
             this.FadeStepSeconds = fadeStepSeconds;
             this.FadeDelaySeconds = fadeDelaySeconds;
+
+            this.InitializeTimers();
         }
 
         public void StartFade()

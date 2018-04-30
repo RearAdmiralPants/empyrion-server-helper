@@ -45,28 +45,67 @@ namespace EmpyrionManager.Managers
             result.Name = name;
             result.DestinationPath = this.PathToBackup(name);
             result.SourceSavegamePath = this.EmpyrionSaveDirectory.TrailingBackslash();
-            result.IncludedFiles.AddRange(this.GetFiles(result.SourceSavegamePath));
+            result.AddComponents(this.GetFiles(result.SourceSavegamePath));
             return result;
         }
 
-        private List<string> GetFiles(string path) {
-            var result = new List<string>();
+        /// <summary>
+        /// Recursively retrieves a list of all backup components within a particular directory (and all of its subdirectories).
+        /// </summary>
+        /// <param name="path">The path for which to retrieve all backup components.</param>
+        /// <returns>A list of all backup components within the given path and all of its subdirectories.</returns>
+        private HashSet<BackupComponent> GetFiles(string path) {
+            var result = new HashSet<BackupComponent>();
+
+            var comp = new BackupComponent();
+            comp.Type = BackupComponentType.Directory;
+            comp.Path = path;
+            result.Add(comp);
 
             foreach (var dir in Directory.GetDirectories(path)) {
-                result.AddRange(this.GetFiles(dir));
+                result.UnionWith(this.GetFiles(dir));
             }
 
             foreach (var file in Directory.GetFiles(path)) {
-                result.Add(file);
+                result.Add(BackupComponent.FromFile(path));
             }
 
             return result;
         }
 
         private void ExecuteBackup(Backup backup) {
+            /*
             foreach (var file in backup.IncludedFiles) {
                 File.Copy(file, this.GetDestinationFile(file, backup));                
             }
+            */
+            foreach (var comp in backup.IncludedComponents)
+            {
+                this.CopyComponent(comp, backup);
+            }
+        }
+
+        private void CopyComponent(BackupComponent component, Backup backup)
+        {
+            if (component.Type == BackupComponentType.File)
+            {
+                this.CopyFile(component.Path, this.GetDestinationFile(component.Path, backup));
+            }
+            else if (component.Type == BackupComponentType.Directory && !Directory.Exists(component.Path))
+            {
+                Directory.CreateDirectory(component.Path);
+            }
+        }
+
+        private void CopyFile(string source, string dest)
+        {
+            var fileDir = Path.GetDirectoryName(dest);
+
+            if (!Directory.Exists(fileDir)) {
+                Directory.CreateDirectory(fileDir);
+            }
+
+            File.Copy(source, dest);
         }
 
         private string GetDestinationFile(string file, Backup backup) {
