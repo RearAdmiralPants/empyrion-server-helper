@@ -74,11 +74,6 @@ namespace EmpyrionManager.Managers
         }
 
         private void ExecuteBackup(Backup backup) {
-            /*
-            foreach (var file in backup.IncludedFiles) {
-                File.Copy(file, this.GetDestinationFile(file, backup));                
-            }
-            */
             foreach (var comp in backup.IncludedComponents)
             {
                 this.CopyComponent(comp, backup);

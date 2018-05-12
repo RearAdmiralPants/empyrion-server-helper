@@ -63,18 +63,6 @@
 
             var found = chars.FirstOrDefault(c => invalidDir.Contains(c));
             return found != default(char);
-
-            /*
-            foreach (var badChar in invalid)
-            {
-                if (orig.Contains(badChar.ToString()))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-            */
         }
 
         /// <summary>
@@ -88,18 +76,6 @@
 
             var found = orig.ToCharArray().FirstOrDefault(c => invalid.Contains(c));
             return found != default(char);
-
-            /*
-            foreach (var badChar in invalid)
-            {
-                if (orig.Contains(badChar.ToString()))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-            */
         }
 
         /// <summary>
