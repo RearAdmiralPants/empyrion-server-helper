@@ -60,8 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\Archive\ArchiveState.cs" />
     <Compile Include="Abstractions\Backup.cs" />
     <Compile Include="Abstractions\BackupComponent.cs" />
+    <Compile Include="Abstractions\Archive\BackupArchive.cs" />
+    <Compile Include="Abstractions\Archive\IBackupArchive.cs" />
     <Compile Include="BackupComponentType.cs" />
     <Compile Include="Data\BackupStore.cs" />
     <Compile Include="Data\DTO\BackupInstance.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="Inheritors\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Managers\ArchiveManager.cs" />
     <Compile Include="Managers\BackupManager.cs" />
     <Compile Include="Mappers\Mappings.cs" />
     <Compile Include="Program.cs" />
@@ -129,6 +133,7 @@
   <ItemGroup>
     <Content Include="License.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
