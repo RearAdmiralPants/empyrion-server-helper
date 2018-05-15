@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\Archive\ArchiveState.cs" />
+    <Compile Include="Abstractions\Archive\CompressedArchive.cs" />
+    <Compile Include="Abstractions\Archive\PackageType.cs" />
     <Compile Include="Abstractions\Backup.cs" />
     <Compile Include="Abstractions\BackupComponent.cs" />
     <Compile Include="Abstractions\Archive\BackupArchive.cs" />
