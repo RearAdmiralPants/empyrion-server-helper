@@ -93,6 +93,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Managers\BackupManager.cs" />
+    <Compile Include="Managers\SettingManager.cs" />
     <Compile Include="Mappers\Mappings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
