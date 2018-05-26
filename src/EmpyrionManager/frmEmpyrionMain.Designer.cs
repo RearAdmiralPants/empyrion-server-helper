@@ -86,7 +86,6 @@
             // 
             // btnLaunchTelnet
             // 
-            this.btnLaunchTelnet.Enabled = false;
             this.btnLaunchTelnet.Location = new System.Drawing.Point(539, 527);
             this.btnLaunchTelnet.Name = "btnLaunchTelnet";
             this.btnLaunchTelnet.Size = new System.Drawing.Size(75, 23);
@@ -137,7 +136,6 @@
             // 
             // btnStartServer
             // 
-            this.btnStartServer.Enabled = false;
             this.btnStartServer.Location = new System.Drawing.Point(12, 527);
             this.btnStartServer.Name = "btnStartServer";
             this.btnStartServer.Size = new System.Drawing.Size(75, 23);

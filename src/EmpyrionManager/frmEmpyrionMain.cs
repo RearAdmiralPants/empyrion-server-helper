@@ -69,7 +69,41 @@ namespace EmpyrionManager
 
         private void btnLaunchTelnet_Click(object sender, EventArgs e)
         {
-            Task.Run(() => LoginToTelnet());
+            Task.Run(() => LoginToServer());
+        }
+
+        private async Task LoginToServer()
+        {
+            using (var client = new Client("192.168.2.25", 30144, new System.Threading.CancellationToken()))
+            {
+                var foundColon = await client.TerminatedReadAsync("password:", new TimeSpan(0, 0, 15));
+                this.AppendShellText("\r\nFound colon: " + foundColon);
+
+                if (foundColon.Length > 1)
+                {
+                    await client.WriteLine("PKWadje\r\n");
+                    var foundRetryColon = await client.TerminatedReadAsync("password:", new TimeSpan(0, 0, 5));
+                    this.AppendShellText("\r\nFound retry: " + foundRetryColon);
+                    await client.WriteLine("PKWadje\r\n");
+                    var loggedIn = await client.TerminatedReadAsync("Seed:", new TimeSpan(0, 0, 5));
+                    System.Threading.Thread.Sleep(1000);
+                    this.AppendShellText("\r\nSaving and exiting...");
+
+                    await client.WriteLine("saveandexit 0");
+                    System.Threading.Thread.Sleep(500);
+                }
+
+                if (client.IsConnected)
+                {
+                    this.AppendShellText("\r\nClient still connected; disconnecting...");
+                }
+            }
+
+            this.AppendShellText("Server running? " + this.IsServerRunning().ToString());
+
+            this.AppendShellText("\r\nSession complete.");
+
+
         }
 
         private async Task LoginToTelnet()
@@ -295,11 +329,15 @@ namespace EmpyrionManager
                 return;
             }
 
-            var serverProc = this.StartServer();
+            var serverProc = this.StartServerDirect();
 
             if (serverProc != null)
             {
                 this.AppendShellText("Server is running at PID " + serverProc.Id.ToString() + ".");
+            }
+            else
+            {
+                this.AppendShellText("Failed to start server.");
             }
         }
 
@@ -318,32 +356,48 @@ namespace EmpyrionManager
             return Process.Start(startInfo);
         }
 
-        private Process StartServer()
+        private Process StartServerDirect()
         {
-            return null; // Currently doesn't work
             var dedicatedDir = txtDedicatedDir.Text.TrailingBackslash();
 
             var startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = true;
+            startInfo.FileName = dedicatedDir + "EmpyrionLauncher.exe";
+            startInfo.Arguments = "-startDedi";
+            startInfo.UseShellExecute = true;
+            startInfo.WorkingDirectory = dedicatedDir;
+
+            return Process.Start(startInfo);
+        }
+
+        private Process StartServer()
+        {
+            // return null; // Currently doesn't work
+            var dedicatedDir = txtDedicatedDir.Text.TrailingBackslash();
+
+            var startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = false;
 
             startInfo.FileName = dedicatedDir + "EmpyrionDedicated_FromMgr.cmd";
 
-            startInfo.UseShellExecute = false;
+            startInfo.UseShellExecute = true;
 
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
+            startInfo.RedirectStandardOutput = false;
+            startInfo.RedirectStandardError = false;
 
-            string result;
+            var pId = -1;
             using (var proc = Process.Start(startInfo))
             {
-                using (StreamReader reader = proc.StandardOutput)
-                {
-                    result = reader.ReadToEnd();
-                }
+                pId = proc.Id;
+                proc.WaitForExit();
             }
 
-            this.AppendShellText("\r\nAttempted to start dedicated server:");
-            this.AppendShellText("\r\n" + result + "\r\n");
+            if (pId > -1) {
+                this.AppendShellText("\r\nStarted dedicated server...");
+            }
+            else
+            {
+                this.AppendShellText("\r\nFailed to start dedicated server.");
+            }
 
             Process serverProc = null;
             foreach (var process in Process.GetProcesses())
@@ -351,6 +405,7 @@ namespace EmpyrionManager
                 if (process.ProcessName.ToLowerInvariant().Contains(DEDICATED_SERVER_PROCESSNAME))
                 {
                     serverProc = process;
+                    this.AppendShellText("\r\nServer started at " + serverProc.Id.ToString() + " PID.");
                     break;
                 }
             }
