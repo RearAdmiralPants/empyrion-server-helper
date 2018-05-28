@@ -1,0 +1,6 @@
+Be sure to check differences if any in /origin/feature/ArchiveBackups, etc.
+
+Test with normal groups of files.
+	- Potential idea for unit / integration tests
+	
+Clean up "Emergency" backups during restore, at least periodically.
