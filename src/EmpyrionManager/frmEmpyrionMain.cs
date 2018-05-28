@@ -74,7 +74,7 @@ namespace EmpyrionManager
 
         private async Task LoginToServer()
         {
-            using (var client = new Client("192.168.2.25", 30144, new System.Threading.CancellationToken()))
+            using (var client = new Client("192.168.2.15", 30144, new System.Threading.CancellationToken()))
             {
                 var foundColon = await client.TerminatedReadAsync("password:", new TimeSpan(0, 0, 15));
                 this.AppendShellText("\r\nFound colon: " + foundColon);
